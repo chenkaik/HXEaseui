@@ -42,20 +42,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_chat:
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.System.canWrite(this)) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //startActivityForResult(intent, REQUEST_CODE);
-                        startActivity(intent);
-                        //finish();
-                    } else {
-                        //有了权限，你要做什么呢？具体的动作
-                        checkPermission();
-                    }
-                }else {
-                    checkPermission();
-                }
+//                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    if (!Settings.System.canWrite(this)) {
+//                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        //startActivityForResult(intent, REQUEST_CODE);
+//                        startActivity(intent);
+//                        //finish();
+//                    } else {
+//                        //有了权限，你要做什么呢？具体的动作
+//                        checkPermission();
+//                    }
+//                }else {
+//                    checkPermission();
+//                }
+                toChatPage();
                 break;
             case R.id.logout:
                 progressDialog = new ProgressDialog(this);

@@ -17,8 +17,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 唤醒锁屏 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--https://www.jianshu.com/p/bab716584316-->
     <!-- 允许读写系统设置项 使用设置时需要(不要小看了这个权限,在6.0系统上需要特殊处理) -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!--悬浮窗权限-->
+    <!--<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
     <!-- 修改音频设置 -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- 开机自启动(非必需权限) -->
