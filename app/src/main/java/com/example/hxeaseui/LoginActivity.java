@@ -1,8 +1,12 @@
 package com.example.hxeaseui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,20 +20,79 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private EditText editTextPass;
     private ProgressDialog progressDialog;
 
+    private AlertDialog.Builder builder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 先判断是否登录过 登录成功过没调logout方法，这个方法的返回值一直是true
-        if (EMClient.getInstance().isLoggedInBefore()) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
         setContentView(R.layout.activity_login);
         editTextUser = findViewById(R.id.et_username);
         editTextUser.setText("chen");
         editTextPass = findViewById(R.id.et_password);
         editTextPass.setText("111111");
         findViewById(R.id.btn_login).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkIsLogin();
+    }
+
+    public void checkIsLogin(){
+        // 先判断是否登录过 登录成功过没调logout方法，这个方法的返回值一直是true
+        if (EMClient.getInstance().isLoggedInBefore()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
+
+    /**
+     * 显示提示信息
+     *
+     * @since 2.5.0
+     */
+    private void showMissingPermissionDialog() {
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("当前应用缺少必要权限。\\n\\n请点击\\\"设置\\\"-\\\"权限\\\"-打开允许访问系统设置权限。");
+
+        // 拒绝, 退出应用
+        builder.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                        Toast.makeText(LoginActivity.this, "缺少必要权限，程序无法正常使用", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        builder = null;
+                    }
+                });
+
+        builder.setPositiveButton("设置",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startAppSettings();
+                        dialog.dismiss();
+                        builder = null;
+                    }
+                });
+
+        builder.setCancelable(false);
+
+        builder.show();
+    }
+
+    /**
+     * 启动应用的设置
+     *
+     * @since 2.5.0
+     */
+    private void startAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
     }
 
     @Override
