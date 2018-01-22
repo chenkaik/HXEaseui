@@ -1,4 +1,4 @@
-package com.example.hxeaseui;
+package com.example.hxeaseui.chat;
 
 import java.util.List;
 

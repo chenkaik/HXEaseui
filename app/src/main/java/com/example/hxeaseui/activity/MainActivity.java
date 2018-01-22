@@ -1,4 +1,4 @@
-package com.example.hxeaseui;
+package com.example.hxeaseui.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.hxeaseui.R;
+import com.example.hxeaseui.chat.ChatActivity;
+import com.example.hxeaseui.chat.PermissionListener;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.EaseConstant;
@@ -32,8 +35,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chatNickName = findViewById(R.id.ed_nick);
-        chatNickName.setText("kai");
-        findViewById(R.id.btn_chat).setOnClickListener(this);
+//        chatNickName.setText("kai");
+        findViewById(R.id.to_chat).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
     }
 
@@ -42,7 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_chat:
+            case R.id.to_chat:
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!Settings.System.canWrite(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
@@ -135,6 +138,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             public void run() {
                 progressDialog.dismiss();
                 progressDialog = null;
+                Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

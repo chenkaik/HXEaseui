@@ -1,4 +1,4 @@
-package com.example.hxeaseui;
+package com.example.hxeaseui.chat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.hxeaseui.activity.LoginActivity;
+import com.example.hxeaseui.activity.MainActivity;
+import com.example.hxeaseui.R;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.EaseUI;
 

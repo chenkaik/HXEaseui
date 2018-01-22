@@ -1,4 +1,4 @@
-package com.example.hxeaseui;
+package com.example.hxeaseui.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.hxeaseui.R;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
@@ -31,6 +32,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         editTextPass = findViewById(R.id.et_password);
         editTextPass.setText("111111");
         findViewById(R.id.btn_login).setOnClickListener(this);
+        editTextUser.setSelection(editTextUser.getText().length());
     }
 
     @Override
@@ -112,6 +114,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             public void run() {
                 progressDialog.dismiss();
                 progressDialog = null;
+                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

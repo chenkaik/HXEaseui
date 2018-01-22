@@ -1,8 +1,10 @@
-package com.example.hxeaseui;
+package com.example.hxeaseui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.hxeaseui.activity.BaseActivity;
+import com.example.hxeaseui.R;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 

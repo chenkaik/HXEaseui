@@ -5,25 +5,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.hxeaseui.MainActivity">
+    tools:context="com.example.hxeaseui.activity.MainActivity">
 
     <EditText
         android:id="@+id/ed_nick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入昵称"/>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_edt_selector"
+        android:hint="请输入对方昵称聊天"
+        android:padding="5dp" />
 
-    <Button
-        android:id="@+id/btn_chat"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="进入聊天"/>
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/logout"
+        <Button
+            android:id="@+id/to_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/vm_green_100"
+            android:text="进入聊天"
+            android:textColor="@color/vm_gray_white_100" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/voice_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="@color/vm_green_100"
+            android:text="语音呼叫"
+            android:textColor="@color/vm_gray_white_100" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="退出登录"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/video_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/vm_green_100"
+            android:text="视频呼叫"
+            android:textColor="@color/vm_gray_white_100" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="@color/vm_green_100"
+            android:text="退出登录"
+            android:textColor="@color/vm_gray_white_100" />
+    </LinearLayout>
+
 
 </LinearLayout>
