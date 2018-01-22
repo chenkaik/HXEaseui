@@ -2,11 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hxeaseui">
 
+    <!--硬件功能请求-->
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <!-- 正常权限 -->
     <!-- 网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 访问网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- 访问WIFI状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 震动 -->
@@ -15,7 +20,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 获取当前和最近执行的任务 已被弃用后期可能会添加另一个权限 REAL_GET_TASKS -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <!-- 唤醒锁屏 -->
+    <!-- 唤醒锁屏 音视频通话所需 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 修改音频设置 -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -23,9 +28,13 @@
     <!-- 允许读写系统设置项 使用设置时需要(不要小看了这个权限,在6.0系统上需要特殊处理) -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 悬浮窗权限 -->
-    <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> -->
+     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 开机自启动(非必需权限) -->
     <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <!--蓝牙-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!--读取启动设置-->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
 
 
     <!-- 危险权限(需动态申请) -->
@@ -35,6 +44,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 写入外部存储 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--读取外部存储-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 访问精确定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 读取手机状态 -->
@@ -142,9 +153,23 @@
         <activity
             android:name=".chat.ChatActivity"
             android:screenOrientation="portrait" />
+
         <!--<activity-->
             <!--android:name=".LoginActivity"-->
             <!--android:screenOrientation="portrait"/>-->
+
+        <!-- 语音通话界面 -->
+        <activity
+            android:name=".voice.VoiceCallActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <!-- 视频通话界面 -->
+        <activity
+            android:name=".video.VideoCallActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

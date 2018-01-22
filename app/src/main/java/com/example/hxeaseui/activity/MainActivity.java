@@ -18,6 +18,9 @@ import android.widget.Toast;
 import com.example.hxeaseui.R;
 import com.example.hxeaseui.chat.ChatActivity;
 import com.example.hxeaseui.chat.PermissionListener;
+import com.example.hxeaseui.video.VideoCallActivity;
+import com.example.hxeaseui.voice.CallManager;
+import com.example.hxeaseui.voice.VoiceCallActivity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.EaseConstant;
@@ -30,23 +33,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private EditText chatNickName;
     private ProgressDialog progressDialog;
 
+    private String toUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chatNickName = findViewById(R.id.ed_nick);
-//        chatNickName.setText("kai");
         findViewById(R.id.to_chat).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        findViewById(R.id.voice_chat).setOnClickListener(this);
+        findViewById(R.id.video_chat).setOnClickListener(this);
     }
 
     private static final int REQUEST_CODE = 1;
 
     @Override
     public void onClick(View v) {
+        toUsername = chatNickName.getText().toString().trim();
         switch (v.getId()) {
-            case R.id.to_chat:
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            case R.id.to_chat: // 聊天界面
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!Settings.System.canWrite(this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -57,12 +64,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         //有了权限 你要做什么 具体的动作
                         checkPermission();
                     }
-                }else {
+                } else {
                     checkPermission();
                 }
-                //toChatPage();
                 break;
-            case R.id.logout:
+            case R.id.voice_chat: // 语音聊天
+                if (!TextUtils.isEmpty(toUsername)) {
+                    String currentName = EMClient.getInstance().getCurrentUser();
+                    if (TextUtils.equals(toUsername, currentName)) {
+                        Toast.makeText(this, "不能和自己聊天", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, VoiceCallActivity.class);
+                        CallManager.getInstance().setChatId(toUsername);
+                        CallManager.getInstance().setInComingCall(false);
+                        CallManager.getInstance().setCallType(CallManager.CallType.VOICE);
+                        startActivity(intent);
+                    }
+                }else {
+                    Toast.makeText(this, "聊天的对象昵称不能为空", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.video_chat: // 视频聊天
+                if (!TextUtils.isEmpty(toUsername)) {
+                    String currentName = EMClient.getInstance().getCurrentUser();
+                    if (TextUtils.equals(toUsername, currentName)) {
+                        Toast.makeText(this, "不能和自己聊天", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, VideoCallActivity.class);
+                        CallManager.getInstance().setChatId(toUsername);
+                        CallManager.getInstance().setInComingCall(false);
+                        CallManager.getInstance().setCallType(CallManager.CallType.VIDEO);
+                        startActivity(intent);
+                    }
+                }else {
+                    Toast.makeText(this, "聊天的对象昵称不能为空", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.logout: // 退出登录
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage("正在退出");
                 progressDialog.show();
@@ -74,7 +112,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    public void checkPermission(){
+    public void checkPermission() { // 检测权限
         if (Build.VERSION.SDK_INT >= 23 && getApplicationInfo().targetSdkVersion >= 23) {
             requestRuntimePermission(new String[]{
                     Manifest.permission.RECORD_AUDIO,
@@ -102,12 +140,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //    }
 
     @Override
-    public void onGranted() {
+    public void onGranted() { // 有权限
         toChatPage();
     }
 
     @Override
-    public void onDenied(List<String> deniedPermissions) {
+    public void onDenied(List<String> deniedPermissions) { // 无权限
         showMissingPermissionDialog();
     }
 
@@ -115,14 +153,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      * 去聊天页面
      */
     private void toChatPage() {
-        String nickName = chatNickName.getText().toString().trim();
-        if (!TextUtils.isEmpty(nickName)) {
+        if (!TextUtils.isEmpty(toUsername)) {
             String currentName = EMClient.getInstance().getCurrentUser();
-            if (nickName.equals(currentName)) {
+            if (TextUtils.equals(toUsername, currentName)) {
                 Toast.makeText(this, "不能和自己聊天", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                intent.putExtra(EaseConstant.EXTRA_USER_ID, nickName);
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, toUsername);
                 startActivity(intent);
                 //startActivity(new Intent(MainActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, nickName));
             }
@@ -130,6 +167,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             Toast.makeText(this, "聊天的对象昵称不能为空", Toast.LENGTH_SHORT).show();
         }
     }
+
+//    private void checkContacts() {
+//        toUsername = chatNickName.getText().toString().trim();
+//        if (!TextUtils.isEmpty(toUsername)) {
+//            String currentName = EMClient.getInstance().getCurrentUser();
+//            if (TextUtils.equals(toUsername, currentName)) {
+//                Toast.makeText(this, "不能和自己聊天", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//        } else {
+//            Toast.makeText(this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//    }
 
     @Override
     public void onSuccess() { // 退出登录成功
